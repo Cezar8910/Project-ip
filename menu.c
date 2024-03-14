@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "pontuacao.h"
 
 GameState MenuState()
 {
@@ -36,6 +37,8 @@ GameState MenuState()
     Color normalColor = WHITE; // Cor normal dos botões
     Color hoverColor = GRAY;   // Cor quando o mouse está sobre o botão
 
+    int MaxPont = carregarPontuacaoMaxima();
+
     while (!WindowShouldClose())
     {
         UpdateMusicStream(menuMusic);
@@ -48,6 +51,9 @@ GameState MenuState()
 
         // Desenha o título
         DrawText("AeroInvaders 1.0", screenWidth / 2 - MeasureText("AeroInvaders 1.0", 60) / 2, 150, 60, BLACK);
+
+        // Desenha pontuação maxima na tela se for maior que 0
+        if(MaxPont > 0) DrawText(TextFormat("Recorde: %d pts", MaxPont),screenWidth - MeasureText(TextFormat("Recorde: %d pts", MaxPont), 40) - 30, 20, 40 , WHITE);
 
         // Lógica para fazer o hover nos botões
         if (CheckCollisionPointRec(GetMousePosition(), playButton))
@@ -228,6 +234,7 @@ GameState GameplayState()
     double inicioGameplay = time;
     double tempoPausaTotal = 0;
     double tempoPausaAux = 0;
+    int pontMaxima = carregarPontuacaoMaxima();
 
     while (!WindowShouldClose() && !IsKeyPressed(KEY_CAPS_LOCK))
     { // loop principal do jogo
@@ -483,7 +490,7 @@ GameState GameplayState()
             }
         }
 
-        // aqui é a colisão do personagem com os inimigos, onde vai ser implementada a morte o reinicio etc
+        // colisão do personagem com os inimigos
         for (int ini = 0; ini < Quant_inimigos; ini++)
         {
 
@@ -491,7 +498,11 @@ GameState GameplayState()
             {
                 if (CheckCollisionRecs(player, capetinhas[ini].solo_retan))
                 {
-                    capetinhas[ini].ativo = false;
+                    if(pontuacao > pontMaxima){
+                        pontMaxima = pontuacao;
+                        salvarPontuacaoMaxima(pontMaxima);
+                    }
+                    return MENU;
                 }
             }
 
@@ -499,7 +510,11 @@ GameState GameplayState()
             {
                 if (CheckCollisionRecs(player, morceguinhos[ini].voa_retan))
                 {
-                    morceguinhos[ini].ativo = false; // aqui vai ser a morte!!
+                    if(pontuacao > pontMaxima){
+                        pontMaxima = pontuacao;
+                        salvarPontuacaoMaxima(pontMaxima);
+                    }
+                    return MENU;
                 }
             }
         }
