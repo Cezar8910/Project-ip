@@ -10,7 +10,7 @@
 
 GameState MenuState()
 {
-    InitAudioDevice();
+    /* InitAudioDevice(); */
 
     // carrega a musica do menu
     Music menuMusic = LoadMusicStream("recursos/audio/CyberpunkSonata.mp3");
@@ -250,6 +250,11 @@ GameState GameplayState()
         { // a cada segundo tira um segundo do tempo limite do personagem
             tempoJogo--;
             contadorTempo++;
+        }
+
+        if (tempoJogo == 0 || CheckCollisionRecs(player, capetinhas->solo_retan) || CheckCollisionRecs(player, morceguinhos->voa_retan))
+        {
+            ClearWindowState(GameplayState());
         }
 
         // spawnador de inimigos chao
@@ -559,17 +564,12 @@ GameState CreditsState()
     {
         if (IsKeyPressed(KEY_E))
         {
-            UnloadTexture(backgroundMenu);
             return MENU;
+            UnloadTexture(backgroundMenu);
         }
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
-
-        if (IsKeyPressed(KEY_M))
-        {
-            MenuState();
-        }
 
         DrawTexture(backgroundMenu, 0, 0, WHITE);
 

@@ -10,8 +10,9 @@ int main()
     InitWindow(screenWidth, screenHeight, "Jogo"); // inicializa a janela do jogo
 
     GameState currentState = MENU;
+    InitAudioDevice();
 
-    while (!WindowShouldClose() && !IsKeyPressed(KEY_CAPS_LOCK))
+    while (!WindowShouldClose() && currentState != EXIT)
     { // loop principal do jogo
 
         switch (currentState)
