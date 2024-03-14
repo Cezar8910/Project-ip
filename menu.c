@@ -53,7 +53,8 @@ GameState MenuState()
         DrawText("AeroInvaders 1.0", screenWidth / 2 - MeasureText("AeroInvaders 1.0", 60) / 2, 150, 60, BLACK);
 
         // Desenha pontuação maxima na tela se for maior que 0
-        if(MaxPont > 0) DrawText(TextFormat("Recorde: %d pts", MaxPont),screenWidth - MeasureText(TextFormat("Recorde: %d pts", MaxPont), 40) - 30, 20, 40 , WHITE);
+        if (MaxPont > 0)
+            DrawText(TextFormat("Recorde: %d pts", MaxPont), screenWidth - MeasureText(TextFormat("Recorde: %d pts", MaxPont), 40) - 30, 20, 40, WHITE);
 
         // Lógica para fazer o hover nos botões
         if (CheckCollisionPointRec(GetMousePosition(), playButton))
@@ -260,7 +261,7 @@ GameState GameplayState()
             tempoJogo--;
             contadorTempo++;
         }
-        
+
         // spawnador de inimigos chao
         if (time > tempoCapetinhas)
         {
@@ -493,7 +494,8 @@ GameState GameplayState()
             {
                 if (CheckCollisionRecs(player, capetinhas[ini].solo_retan))
                 {
-                    if(pontuacao > pontMaxima){
+                    if (pontuacao > pontMaxima)
+                    {
                         pontMaxima = pontuacao;
                         salvarPontuacaoMaxima(pontMaxima);
                     }
@@ -505,7 +507,8 @@ GameState GameplayState()
             {
                 if (CheckCollisionRecs(player, morceguinhos[ini].voa_retan))
                 {
-                    if(pontuacao > pontMaxima){
+                    if (pontuacao > pontMaxima)
+                    {
                         pontMaxima = pontuacao;
                         salvarPontuacaoMaxima(pontMaxima);
                     }
@@ -514,10 +517,10 @@ GameState GameplayState()
             }
         }
 
-        if (tempoJogo == 0) {
+        if (tempoJogo == 0)
+        {
 
             return GAMEOVER;
-
         }
 
         DrawRectangle(0, screenHeight - alturaSolo, screenWidth, alturaSolo, BLANK); // chao
@@ -591,19 +594,19 @@ GameState CreditsState()
         ClearBackground(RAYWHITE);
 
         DrawTexture(backgroundMenu, 0, 0, WHITE);
-        DrawText("Esse é um jogo desenvolvido pelos estudantes de Engenharia da Computação do Cin de 2023.2:", 50, 80, 20, BLACK);
-        DrawText("Arthur Alves", 50, 100, 20, BLACK);
-        DrawText("Cezar Galvão", 50, 120, 20, BLACK);
-        DrawText("Eduardo Alves", 50, 140, 20, BLACK);
-        DrawText("Manoel David", 50, 160, 20, BLACK);
-        DrawText("Marcos Alexandre", 50, 180, 20, BLACK);
-        DrawText("Matheus Barbosa", 50, 200, 20, BLACK);
-        DrawText("Você é um estudante do cin e está trabalhando em um sensor de ondas de rádio muito mais eficiente que qualquer", 50, 260, 20, BLACK);
-        DrawText("outro já feito pela humanidade. Um dia, em um fim de espediente no laboratório, você recebe um sinal de ataque", 50, 280, 20, BLACK);
-        DrawText("no seu super sensor!! Sem pestanejar você pega uma nave no porão do cin e parte para o espaço, seu objetivo é se ", 50, 300, 20, BLACK);
-        DrawText("manter vivo o máximo possível derrotar todos os inimigos que aparecerem, quanto mais você derrotar menos sobram", 50, 320, 20, BLACK);
-        DrawText("para destruir a humanidade, boa sorte! Seu sacrifício não será esquecido.", 50, 340, 20, BLACK);
-        DrawText("Aperte E para voltar ao menu", 50, 650, 20, BLACK);
+        DrawText("Esse é um jogo desenvolvido pelos estudantes de Engenharia da Computação do Cin de 2023.2:", 50, 80, 20, WHITE);
+        DrawText("Arthur Alves", 50, 100, 20, WHITE);
+        DrawText("Cezar Galvão", 50, 120, 20, WHITE);
+        DrawText("Eduardo Alves", 50, 140, 20, WHITE);
+        DrawText("Manoel David", 50, 160, 20, WHITE);
+        DrawText("Marcos Alexandre", 50, 180, 20, WHITE);
+        DrawText("Matheus Barbosa", 50, 200, 20, WHITE);
+        DrawText("Você é um estudante do cin e está trabalhando em um sensor de ondas de rádio muito mais eficiente que qualquer", 50, 260, 20, WHITE);
+        DrawText("outro já feito pela humanidade. Um dia, em um fim de espediente no laboratório, você recebe um sinal de ataque", 50, 280, 20, WHITE);
+        DrawText("no seu super sensor!! Sem pestanejar você pega uma nave no porão do cin e parte para o espaço, seu objetivo é se ", 50, 300, 20, WHITE);
+        DrawText("manter vivo o máximo possível derrotar todos os inimigos que aparecerem, quanto mais você derrotar menos sobram", 50, 320, 20, WHITE);
+        DrawText("para destruir a humanidade, boa sorte! Seu sacrifício não será esquecido.", 50, 340, 20, WHITE);
+        DrawText("Aperte E para voltar ao menu", 50, 650, 20, WHITE);
 
         EndDrawing();
     }
@@ -612,7 +615,8 @@ GameState CreditsState()
     return MENU;
 }
 
-GameState GameOver() {
+GameState GameOver()
+{
     // gerar a imagem do jogo para a tela de game over
     Image backgroundImage = LoadImage("recursos/texturas/mainbackground.png");
     ImageResize(&backgroundImage, screenWidth, screenHeight);
@@ -664,14 +668,14 @@ GameState GameOver() {
 
         if (CheckCollisionPointRec(GetMousePosition(), retryButton) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
-           return GAMEPLAY;
+            return GAMEPLAY;
         }
 
         else if (CheckCollisionPointRec(GetMousePosition(), backToMenuButton) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
-            //ClearWindowState(GameOver());
-            ClearWindowState(MenuState());
-           // return MENU;
+
+            /* ClearWindowState(GameOver()); */
+            return MENU;
         }
         EndDrawing();
     }
