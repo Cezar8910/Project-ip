@@ -260,12 +260,7 @@ GameState GameplayState()
             tempoJogo--;
             contadorTempo++;
         }
-
-        if (tempoJogo == 0 || CheckCollisionRecs(player, capetinhas->solo_retan) || CheckCollisionRecs(player, morceguinhos->voa_retan))
-        {
-            ClearWindowState(GameplayState());
-        }
-
+        
         // spawnador de inimigos chao
         if (time > tempoCapetinhas)
         {
@@ -502,7 +497,7 @@ GameState GameplayState()
                         pontMaxima = pontuacao;
                         salvarPontuacaoMaxima(pontMaxima);
                     }
-                    return MENU;
+                    return GAMEOVER;
                 }
             }
 
@@ -514,9 +509,15 @@ GameState GameplayState()
                         pontMaxima = pontuacao;
                         salvarPontuacaoMaxima(pontMaxima);
                     }
-                    return MENU;
+                    return GAMEOVER;
                 }
             }
+        }
+
+        if (tempoJogo == 0) {
+
+            return GAMEOVER;
+
         }
 
         DrawRectangle(0, screenHeight - alturaSolo, screenWidth, alturaSolo, BLANK); // chao
@@ -607,6 +608,74 @@ GameState CreditsState()
         EndDrawing();
     }
     UnloadTexture(backgroundMenu);
+
+    return MENU;
+}
+
+GameState GameOver() {
+    // gerar a imagem do jogo para a tela de game over
+    Image backgroundImage = LoadImage("recursos/texturas/mainbackground.png");
+    ImageResize(&backgroundImage, screenWidth, screenHeight);
+    Texture2D backgroundGameOver = LoadTextureFromImage(backgroundImage);
+    UnloadImage(backgroundImage);
+
+    Rectangle retryButton = {screenWidth / 2 - 100, 300, 250, 60};
+    Rectangle backToMenuButton = {screenWidth / 2 - 100, 400, 250, 60};
+
+    Color normalColor = WHITE;
+    Color hoverColor = GRAY;
+
+    while (!WindowShouldClose())
+    {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+
+        // Desenha a imagem de fundo
+        DrawTexture(backgroundGameOver, 0, 0, WHITE);
+
+        DrawText("GAME OVER", screenWidth / 2 - MeasureText("GAME OVER", 80) / 2, 100, 80, WHITE);
+
+        // Lógica para fazer o hover nos botões
+        if (CheckCollisionPointRec(GetMousePosition(), retryButton))
+        {
+            DrawRectangleRec(retryButton, hoverColor);
+            DrawRectangleLinesEx(retryButton, 3, BLACK);
+        }
+        else
+        {
+            DrawRectangleRec(retryButton, normalColor);
+            DrawRectangleLinesEx(retryButton, 3, BLACK);
+        }
+
+        if (CheckCollisionPointRec(GetMousePosition(), backToMenuButton))
+        {
+            DrawRectangleRec(backToMenuButton, hoverColor);
+            DrawRectangleLinesEx(backToMenuButton, 3, BLACK);
+        }
+        else
+        {
+            DrawRectangleRec(backToMenuButton, normalColor);
+            DrawRectangleLinesEx(backToMenuButton, 3, BLACK);
+        }
+
+        // Desenha os textos dos botões
+        DrawText("Tentar Novamente", retryButton.x + 30, retryButton.y + 15, 20, BLACK);
+        DrawText("Voltar ao menu", backToMenuButton.x + 40, backToMenuButton.y + 15, 20, BLACK);
+
+        if (CheckCollisionPointRec(GetMousePosition(), retryButton) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+        {
+           return GAMEPLAY;
+        }
+
+        else if (CheckCollisionPointRec(GetMousePosition(), backToMenuButton) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+        {
+            //ClearWindowState(GameOver());
+            ClearWindowState(MenuState());
+           // return MENU;
+        }
+        EndDrawing();
+    }
+    UnloadTexture(backgroundGameOver);
 
     return MENU;
 }
