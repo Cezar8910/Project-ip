@@ -85,7 +85,7 @@ GameState MenuState()
 
         // Desenha os textos dos botões
         DrawText("Jogar", playButton.x + 70, playButton.y + 15, 20, BLACK);
-        DrawText("Créditos", creditsButton.x + 55, creditsButton.y + 15, 20, BLACK);
+        DrawText("História e créditos", creditsButton.x + 4, creditsButton.y + 15, 20, BLACK);
         DrawText("Sair", exitButton.x + 75, exitButton.y + 15, 20, BLACK);
 
         // Verifica se algum botão foi clicado
@@ -226,6 +226,8 @@ GameState GameplayState()
 
     double time = GetTime();
     double inicioGameplay = time;
+    double tempoPausaTotal = 0;
+    double tempoPausaAux = 0;
 
     while (!WindowShouldClose() && !IsKeyPressed(KEY_CAPS_LOCK))
     { // loop principal do jogo
@@ -233,7 +235,7 @@ GameState GameplayState()
         UpdateMusicStream(mainMusic);
 
         double delta = GetFrameTime();
-        time = GetTime() - inicioGameplay;
+        time = GetTime() - inicioGameplay - tempoPausaTotal;
 
         if (time > tempoDificuldade)
         { // a cada 10 segundos aumenta a velocidade dos inimigos e do spawn
@@ -296,6 +298,8 @@ GameState GameplayState()
         {
             isPaused = true;
 
+            tempoPausaAux = GetTime();
+
             // gera a imagem do menu de pause
             Image backgroundImage = LoadImage("recursos/texturas/mainbackground.png");
             ImageResize(&backgroundImage, screenWidth, screenHeight);
@@ -345,6 +349,7 @@ GameState GameplayState()
 
                 if (CheckCollisionPointRec(GetMousePosition(), continuePlayButton) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
                 {
+                    tempoPausaTotal += GetTime() - tempoPausaAux;
                     isPaused = false;
                 }
 
@@ -553,14 +558,12 @@ GameState GameplayState()
 
 GameState CreditsState()
 {
-
-    Image backgroundImage = LoadImage("recursos/texturas/backgroundCredits.png"); // Só pra deixar a janela de créditos mais bonita
+    Image backgroundImage = LoadImage("recursos/texturas/backgroundCredits.png");
     ImageResize(&backgroundImage, screenWidth, screenHeight);
     Texture2D backgroundMenu = LoadTextureFromImage(backgroundImage);
     UnloadImage(backgroundImage);
 
-    // Tela de créditos
-    while (!WindowShouldClose() && !IsKeyPressed(KEY_E))
+    while (!WindowShouldClose())
     {
         if (IsKeyPressed(KEY_E))
         {
@@ -572,15 +575,18 @@ GameState CreditsState()
         ClearBackground(RAYWHITE);
 
         DrawTexture(backgroundMenu, 0, 0, WHITE);
-
-        DrawText("Olá, esse é um jogo desenvolvido pelos estudantes de Engenharia da Computação do Cin de 2023.2:",
-                 50, 50, 20, BLACK);
+        DrawText("Esse é um jogo desenvolvido pelos estudantes de Engenharia da Computação do Cin de 2023.2:", 50, 80, 20, BLACK);
         DrawText("Arthur Alves", 50, 100, 20, BLACK);
         DrawText("Cezar Galvão", 50, 120, 20, BLACK);
         DrawText("Eduardo Alves", 50, 140, 20, BLACK);
         DrawText("Manoel David", 50, 160, 20, BLACK);
         DrawText("Marcos Alexandre", 50, 180, 20, BLACK);
         DrawText("Matheus Barbosa", 50, 200, 20, BLACK);
+        DrawText("Você é um estudante do cin e está trabalhando em um sensor de ondas de rádio muito mais eficiente que qualquer", 50, 260, 20, BLACK);
+        DrawText("outro já feito pela humanidade. Um dia, em um fim de espediente no laboratório, você recebe um sinal de ataque", 50, 280, 20, BLACK);
+        DrawText("no seu super sensor!! Sem pestanejar você pega uma nave no porão do cin e parte para o espaço, seu objetivo é se ", 50, 300, 20, BLACK);
+        DrawText("manter vivo o máximo possível derrotar todos os inimigos que aparecerem, quanto mais você derrotar menos sobram", 50, 320, 20, BLACK);
+        DrawText("para destruir a humanidade, boa sorte! Seu sacrifício não será esquecido.", 50, 340, 20, BLACK);
         DrawText("Aperte E para voltar ao menu", 50, 650, 20, BLACK);
 
         EndDrawing();
