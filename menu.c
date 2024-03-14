@@ -50,7 +50,7 @@ GameState MenuState()
         DrawTexture(backgroundMenu, 0, 0, WHITE);
 
         // Desenha o título
-        DrawText("AeroInvaders 1.0", screenWidth / 2 - MeasureText("AeroInvaders 1.0", 60) / 2, 150, 60, BLACK);
+        DrawText("AeroInvaders 1.0", screenWidth / 2 - MeasureText("AeroInvaders 1.0", 60) / 2, 150, 60, PURPLE);
 
         // Desenha pontuação maxima na tela se for maior que 0
         if (MaxPont > 0)
@@ -673,8 +673,6 @@ GameState GameOver()
 
         else if (CheckCollisionPointRec(GetMousePosition(), backToMenuButton) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
-
-            /* ClearWindowState(GameOver()); */
             return MENU;
         }
         EndDrawing();
