@@ -24,7 +24,10 @@ int main()
             currentState = GameplayState(); // Atualiza o estado com base na lógica do jogo
             break;
         case CREDITS:
-            currentState = CreditsState();
+            currentState = CreditsState();//Abre a tela de créditos
+            break;
+        case GAMEOVER:
+            currentState = GameOver();//Em caso de morte, abre a tela de game over
             break;
         case EXIT:
             CloseWindow();

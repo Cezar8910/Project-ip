@@ -10,5 +10,6 @@
 GameState MenuState();
 GameState GameplayState();
 GameState CreditsState();
+GameState GameOver();
 
 #endif
